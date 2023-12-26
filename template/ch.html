@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Get Order by ID</title>
+</head>
+<body>
+
+    <h1>Get Order by ID</h1>
+
+    <form id="orderForm">
+        <label for="orderId">Order ID:</label>
+        <input type="text" id="orderId" name="orderId" required>
+        <button type="button" onclick="getOrder()">Get Order</button>
+    </form>
+
+    <div id="result"></div>
+
+    <script>
+        function getOrder() {
+            var orderId = document.getElementById('orderId').value;
+
+            // Make an AJAX request to the /order endpoint
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "/order?id=" + orderId, true);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4) {
+                    if (xhr.status == 200) {
+                        // Parse the JSON response
+                        var order = JSON.parse(xhr.responseText);
+
+                        // Display order information in the result div
+                        document.getElementById('result').innerHTML = "<pre>" + JSON.stringify(order, null, 2) + "</pre>";
+                    } else {
+                        // Display an error message if the request fails
+                        document.getElementById('result').innerHTML = "Error: " + xhr.statusText;
+                    }
+                }
+            };
+            xhr.send();
+        }
+    </script>
+
+</body>
+</html>

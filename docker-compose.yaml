@@ -1,0 +1,26 @@
+version: "3.1"
+services:
+
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - ${DB_PORT}:${DB_PORT}
+    env_file:
+      - .env
+
+  nats-streaming:
+    restart: always
+    image: nats-streaming
+    ports:
+      - 4222:4222
+      - 8222:8222
+    command:
+      - "--cluster_id"
+      - ${CLUSTERID}
+    env_file:
+      - .env
